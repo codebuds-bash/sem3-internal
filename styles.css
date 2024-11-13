@@ -1,0 +1,54 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #222; /* Dark theme background color */
+    color: #fff; /* Dark theme text color */
+}
+
+.calculator {
+    text-align: center;
+    padding: 40px;
+    background-color: #333; /* Dark theme calculator background color */
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3); /* Dark theme box shadow */
+    max-width: 600px;
+    width: 100%;
+}
+
+.calculator h1 {
+    margin-bottom: 20px;
+    font-size: 40px;
+}
+
+.input-group {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    position: relative;
+    color: white;
+}
+
+.input-group label {
+    font-size: 15px;
+    padding-left: 350px;
+    text-align: right;
+    position: absolute;
+    top: 12px;
+    transition: 0.3s;
+    pointer-events: none;
+    color: #808080; /* Default color for labels */
+}
+
+.input-group input {
+    width: 300px;
+    height: 35px;
+    border: none;
+    outline: none;
+    padding: 0px 7px;
+}
