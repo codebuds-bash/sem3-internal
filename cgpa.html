@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CGPA Calculator</title>
+    <!-- Google Font Link for JetBrains Mono -->
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0077b6, #90e0ef);
+        }
+        .calculator-container {
+            background-color: #ffffff;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 90%;
+        }
+        .calculator-container h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #333;
+            font-weight: 700;
+        }
+        .grading-scale {
+            background-color: #f1f1f1;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .grading-scale ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .grading-scale ul li {
+            margin: 5px 0;
+            font-weight: 500;
+            color: #555;
+        }
+        .input-group {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 15px;
+        }
+        .input-group label {
+            flex: 1;
+            color: #555;
+            font-weight: 500;
+        }
+        .input-group input, .input-group select {
+            flex: 2;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            outline: none;
+        }
+        .input-group input:focus, .input-group select:focus {
+            border-color: #00b4d8;
+        }
+        .add-subject {
+            display: block;
+            width: 100%;
+            background: #0077b6;
+            color: #ffffff;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+        .add-subject:hover {
+            background: #023e8a;
+        }
+        .calculate-btn {
+            display: block;
+            width: 100%;
+            background-color: #00b4d8;
+            color: #ffffff;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .calculate-btn:hover {
+            background-color: #0077b6;
+        }
+        .result {
+            margin-top: 25px;
+            font-size: 1.6rem;
+            color: #2e8b57;
+            text-align: center;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="calculator-container">
+        <h2>CGPA Calculator</h2>
+        
+        <!-- Grading Scale Information -->
+        <div class="grading-scale">
+            <h4>Grading Scale:</h4>
+            <ul>
+                <li>A+ = 10 grade points</li>
+                <li>A  = 9 grade points</li>
+                <li>B+ = 8 grade points</li>
+                <li>B  = 7 grade points</li>
+                <li>C+ = 6 grade points</li>
+                <li>C  = 5 grade points</li>
+                <li>D  = 4 grade points</li>
+                <li>F  = 0 grade points</li>
+            </ul>
+        </div>
+
+        <div id="subjects-container">
+            <div class="input-group">
+                <label>Grade:</label>
+                <select class="grade-select">
+                    <option value="10">A+</option>
+                    <option value="9">A</option>
+                    <option value="8">B+</option>
+                    <option value="7">B</option>
+                    <option value="6">C+</option>
+                    <option value="5">C</option>
+                    <option value="4">D</option>
+                    <option value="0">F</option>
+                </select>
+                <label>Credits:</label>
+                <input type="number" class="credit-input" placeholder="Credits" min="1" max="5" required>
+            </div>
+        </div>
+        
+        <div class="add-subject" onclick="addSubject()">+ Add Another Subject</div>
+        <button class="calculate-btn" onclick="calculateCGPA()">Calculate CGPA</button>
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        function addSubject() {
+            const container = document.getElementById('subjects-container');
+            const subjectDiv = document.createElement('div');
+            subjectDiv.classList.add('input-group');
+            subjectDiv.innerHTML = `
+                <label>Grade:</label>
+                <select class="grade-select">
+                    <option value="10">A+</option>
+                    <option value="9">A</option>
+                    <option value="8">B+</option>
+                    <option value="7">B</option>
+                    <option value="6">C+</option>
+                    <option value="5">C</option>
+                    <option value="4">D</option>
+                    <option value="0">F</option>
+                </select>
+                <label>Credits:</label>
+                <input type="number" class="credit-input" placeholder="Credits" min="1" max="5" required>
+            `;
+            container.appendChild(subjectDiv);
+        }
+
+        function calculateCGPA() {
+            const grades = document.querySelectorAll('.grade-select');
+            const credits = document.querySelectorAll('.credit-input');
+            let totalGradePoints = 0;
+            let totalCredits = 0;
+
+            for (let i = 0; i < grades.length; i++) {
+                const gradePoint = parseFloat(grades[i].value);
+                const credit = parseFloat(credits[i].value);
+                if (!isNaN(gradePoint) && !isNaN(credit)) {
+                    totalGradePoints += gradePoint * credit;
+                    totalCredits += credit;
+                }
+            }
+
+            const cgpa = totalCredits > 0 ? (totalGradePoints / totalCredits).toFixed(2) : 0;
+            document.getElementById('result').textContent = `Your CGPA: ${cgpa}`;
+        }
+    </script>
+</body>
+</html>
