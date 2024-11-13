@@ -95,6 +95,9 @@ li {
 .hybrid-card {
     border-top: 5px solid #ffa500;
 }
+.python-card {
+    border-top: 5px solid #ffa500;
+}
 
 /* Responsive Design */
 @media (max-width: 768px) {
