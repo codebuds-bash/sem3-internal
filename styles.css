@@ -95,10 +95,17 @@ li {
 .hybrid-card {
     border-top: 5px solid #ffa500;
 }
-.python-card {
+.python-card {  
     border-top: 5px solid #35c40a;
 }
+.SoftSkill-card{
+    border-top: 5px solid #c40a7a
 
+}
+.cgpa-card{
+    border-top: 5px solid #1e1e1e;
+    border-bottom: 5px solid #1e1e1e;
+}
 /* Responsive Design */
 @media (max-width: 768px) {
     h1 {
