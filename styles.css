@@ -128,3 +128,39 @@ li {
         max-width: 100%;
     }
 }
+
+/* Card Styles */
+.social-card {
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    text-align: center;
+    margin-top: 40px;
+}
+
+.social-card h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* Social Icons Container */
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+/* Social Icon Styles */
+.social-icon {
+    font-size: 50px; /* Increased icon size */
+    color: #333;
+    text-decoration: none;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.social-icon:hover {
+    color: #b50000; /* Hover color */
+    transform: scale(1.1); /* Slight scale on hover */
+}
