@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hybrid Subject Calculator</title>
+    <style>
+      /* Your existing CSS styles */
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #222; /* Dark theme background color */
+        color: #fff; /* Dark theme text color */
+      }
+
+      .calculator {
+        margin-top: 50px;
+        text-align: center;
+        padding: 40px;
+        background-color: #333; /* Dark theme calculator background color */
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.3); /* Dark theme box shadow */
+        max-width: 600px;
+        width: 100%;
+      }
+
+      .calculator h1 {
+        margin-bottom: 20px;
+        font-size: 40px;
+      }
+
+      .input-group {
+        margin-bottom: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+        position: relative;
+        color: white;
+      }
+
+      .input-group label {
+        font-size: 15px;
+        padding-left: 350px;
+        text-align: right;
+        position: absolute;
+        top: 12px;
+        transition: 0.3s;
+        pointer-events: none;
+        color: #808080; /* Default color for labels */
+      }
+
+      .input-group input {
+        width: 300px;
+        height: 35px;
+        border: none;
+        outline: none;
+        padding: 0px 7px;
+        border-radius: 6px;
+        color: #fff;
+        font-size: 15px;
+        background-color: transparent;
+        box-shadow: 3px 3px 10px rgba(0, 0, 0, 1),
+          -1px -1px 6px rgba(255, 255, 255, 0.4);
+      }
+
+      .input-group input:focus {
+        border: 2px solid transparent;
+        color: #fff; /* Change text color to white when input is focused */
+        box-shadow: 3px 3px 10px rgba(0, 0, 0, 1),
+          -1px -1px 6px rgba(255, 255, 255, 0.4),
+          inset 3px 3px 10px rgba(0, 0, 0, 1),
+          inset -1px -1px 6px rgba(255, 255, 255, 0.4);
+        padding-left: 20px; /* Add padding to shift text to the right */
+      }
+
+      .input-group input:focus + label,
+      .input-group input:valid + label {
+        color: #4caf50; /* Change label color to green when input is focused */
+      }
+
+      .result {
+        margin-top: 27px;
+        font-size: 35px;
+      }
+
+      .calculate-btn {
+        /* Your existing button styles */
+        --color: #00a97f;
+        --color2: rgb(10, 25, 30);
+        padding: 0.8em 1.75em;
+        background-color: transparent;
+        border-radius: 6px;
+        border: 0.3px solid var(--color);
+        transition: 0.5s;
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+        z-index: 1;
+        font-weight: 300;
+        font-size: 17px;
+        font-family: "Roboto", "Segoe UI", sans-serif;
+        text-transform: uppercase;
+        color: var(--color);
+      }
+
+      .calculate-btn::after,
+      .calculate-btn::before {
+        content: "";
+        display: block;
+        height: 100%;
+        width: 100%;
+        transform: skew(90deg) translate(-50%, -50%);
+        position: absolute;
+        inset: 50%;
+        left: 25%;
+        z-index: -1;
+        transition: 0.5s ease-out;
+        background-color: var(--color);
+      }
+
+      .calculate-btn::before {
+        top: -50%;
+        left: -25%;
+        transform: skew(90deg) rotate(180deg) translate(-50%, -50%);
+      }
+
+      .calculate-btn:hover::before {
+        transform: skew(45deg) rotate(180deg) translate(-50%, -50%);
+      }
+
+      .calculate-btn:hover::after {
+        transform: skew(45deg) translate(-50%, -50%);
+      }
+
+      .calculate-btn:hover {
+        color: var(--color2);
+      }
+
+      .calculate-btn:active {
+        filter: brightness(0.7);
+        transform: scale(0.98);
+      }
+    </style>
+  </head>
+
+
+  <body>
+    <div class="calculator">
+      <h1>Hybrid Subject Calculator</h1>
+      <div class="input-group">
+        <input
+          type="number"
+          id="surprise_test"
+          name="surprise_test"
+          class="input"
+          required
+        />
+        <label for="surprise_test" id="surprise_test"
+          >Surprise Test (out of 12):</label
+        >
+      </div>
+      <!-- Add other input groups here -->
+      <div class="input-group">
+        <input
+          type="number"
+          id="assessment_1"
+          name="assessment_1"
+          class="input"
+          required
+        />
+        <label for="assessment_1" id="assessment_1_label"
+          >Assessment 1 Marks (out of 30):</label
+        >
+      </div>
+      <div class="input-group">
+        <input
+          type="number"
+          id="assessment_2"
+          name="assessment_2"
+          class="input"
+          required
+        />
+        <label for="assessment_2" id="assessment_2_label"
+          >Assessment 2 Marks (out of 30):</label
+        >
+      </div>
+      <div class="input-group">
+        <input
+          type="number"
+          id="assessment_3"
+          name="assessment_3"
+          class="input"
+          required
+        />
+        <label for="assessment_3" id="assessment_3_label"
+          >Assessment 3 Marks (out of 30):</label
+        >
+      </div>
+      <div class="input-group">
+        <input
+          type="number"
+          id="assessment_4"
+          name="assessment_4"
+          class="input"
+          required
+        />
+        <label for="assessment_4" id="assessment_4_label"
+          >Assessment 4 Marks (out of 30):</label
+        >
+      </div>
+      <div class="input-group">
+        <input
+          type="number"
+          id="end_sem_practical"
+          name="end_sem_practical"
+          class="input"
+          required
+        />
+        <label for="end_sem_practical" id="end_sem_practical_label"
+          >End Sem Practical Marks (out of 40):</label
+        >
+      </div>
+      <!-- New Input Boxes -->
+      <div class="input-group">
+        <input
+          type="number"
+          id="assignment_marks"
+          name="assignment_marks"
+          class="input"
+          required
+        />
+        <label for="assignment_marks" id="assignment_marks_label"
+          >Assignment Marks (out of 10):</label
+        >
+      </div>
+      <div class="input-group">
+        <input
+          type="number"
+          id="attendance_marks"
+          name="attendance_marks"
+          class="input"
+          required
+        />
+        <label for="attendance_marks" id="attendance_marks_label"
+          >Attendance Marks(out of 2):</label
+        >
+      </div>
+      <div class="input-group">
+        <input
+          type="number"
+          id="class_performance_marks"
+          name="class_performance_marks"
+          class="input"
+          required
+        />
+        <label for="class_performance_marks" id="class_performance_marks_label"
+          >Class Performance Marks (out of 10):</label
+        >
+      </div>
+      <div class="input-group">
+        <input
+          type="number"
+          id="course_project_marks"
+          name="course_project_marks"
+          class="input"
+          required
+        />
+        <label for="course_project_marks" id="course_project_marks_label"
+          >Course Project Marks (out of 10):</label
+        >
+      </div>
+      <div class="input-group">
+        <input
+          type="number"
+          id="quiz_marks"
+          name="quiz_marks"
+          class="input"
+          required
+        />
+        <label for="quiz_marks" id="quiz_marks_label"
+          >Quiz Marks (out of 4):</label
+        >
+      </div>
+      <div class="input-group">
+        <input
+          type="number"
+          id="mst_1_marks"
+          name="mst_1_marks"
+          class="input"
+          required
+        />
+        <label for="mst_1_marks" id="mst_1_marks_label">MST 1 Marks:</label>
+      </div>
+      <div class="input-group">
+        <input
+          type="number"
+          id="mst_2_marks"
+          name="mst_2_marks"
+          class="input"
+          required
+        />
+        <label for="mst_2_marks" id="mst_2_marks_label">MST 2 Marks:</label>
+        
+      </div>
+      <button class="calculate-btn" onclick="calculate()">Calculate</button>
+      <div class="result" id="result"></div>
+    </div>
+    
+      
+
+    <script>
+      // Function to change label color when input is focused
+function changeLabelColor(inputId, labelId) {
+  var input = document.getElementById(inputId);
+  var label = document.getElementById(labelId);
+
+  input.addEventListener("focus", function () {
+    label.style.color = "#4caf50"; // Change label color to green when input is focused
+  });
+
+  input.addEventListener("blur", function () {
+    if (input.value === "") {
+      label.style.color = "#808080"; // Reset to default color if input is empty
+    } else {
+      label.style.color = "#4caf50"; // Keep green if input has value
+    }
+  });
+}
+
+// Call function for each input box
+changeLabelColor("surprise_test", "surprise_test_label");
+changeLabelColor("assessment_1", "assessment_1_label");
+changeLabelColor("assessment_2", "assessment_2_label");
+changeLabelColor("assessment_3", "assessment_3_label");
+changeLabelColor("assessment_4", "assessment_4_label");
+changeLabelColor("end_sem_practical", "end_sem_practical_label");
+changeLabelColor("assignment_marks", "assignment_marks_label");
+changeLabelColor("attendance_marks", "attendance_marks_label");
+changeLabelColor("class_performance_marks", "class_performance_marks_label");
+changeLabelColor("course_project_marks", "course_project_marks_label");
+changeLabelColor("mst_1_marks", "mst_1_marks_label");
+changeLabelColor("mst_2_marks", "mst_2_marks_label");
+
+
+// Function to calculate total marks
+function calculate() {
+    var assignment = parseFloat(document.getElementById("assignment_marks").value) || 0;
+    var attendance = parseFloat(document.getElementById("attendance_marks").value) || 0;
+    var classPerformance = parseFloat(document.getElementById("class_performance_marks").value) || 0;
+    var courseProject = parseFloat(document.getElementById("course_project_marks").value) || 0;
+    var mst1 = parseFloat(document.getElementById("mst_1_marks").value) || 0;
+    var mst2 = parseFloat(document.getElementById("mst_2_marks").value) || 0;
+    var endSemPractical = parseFloat(document.getElementById("end_sem_practical").value) || 0;
+    var surpriseTest = parseFloat(document.getElementById("surprise_test").value) || 0;
+    var quiz = parseFloat(document.getElementById("quiz_marks").value) || 0;
+    var assessment1 = parseFloat(document.getElementById("assessment_1").value) || 0;
+    var assessment2 = parseFloat(document.getElementById("assessment_2").value) || 0;
+    var assessment3 = parseFloat(document.getElementById("assessment_3").value) || 0;
+    var assessment4 = parseFloat(document.getElementById("assessment_4").value) || 0;
+
+    // Correcting calculations to match the C++ code
+    var surprise_scaled = (surpriseTest / 12) * 4;
+    var mst_avg = (mst1 + mst2) / 2;
+    var worksheet = ((assessment1 + assessment2 + assessment3 + assessment4) / 120) * 40;
+
+    // Calculate the final total (corrected)
+    var total = ((assignment + quiz + mst_avg + attendance + surprise_scaled + worksheet + endSemPractical + courseProject + classPerformance) / 140) * 70;
+
+    // Display result
+    document.getElementById("result").textContent = "Total Marks: " + total.toFixed(2)+" Out of 70";
+
+
+  // Change result color based on the total marks
+  if (total >= 40) {
+    resultElement.style.color = "#4caf50"; // Green for pass
+  } else {
+    resultElement.style.color = "#f44336"; // Red for fail
+  }
+}
+
+    </script>
+  </body>
+</html>
