@@ -148,7 +148,6 @@
     </style>
   </head>
 
-
   <body>
     <div class="calculator">
       <h1>Hybrid Subject Calculator</h1>
@@ -305,84 +304,109 @@
           required
         />
         <label for="mst_2_marks" id="mst_2_marks_label">MST 2 Marks:</label>
-        
       </div>
       <button class="calculate-btn" onclick="calculate()">Calculate</button>
       <div class="result" id="result"></div>
     </div>
-    
-      
 
     <script>
       // Function to change label color when input is focused
-function changeLabelColor(inputId, labelId) {
-  var input = document.getElementById(inputId);
-  var label = document.getElementById(labelId);
+      function changeLabelColor(inputId, labelId) {
+        var input = document.getElementById(inputId);
+        var label = document.getElementById(labelId);
 
-  input.addEventListener("focus", function () {
-    label.style.color = "#4caf50"; // Change label color to green when input is focused
-  });
+        input.addEventListener("focus", function () {
+          label.style.color = "#4caf50"; // Change label color to green when input is focused
+        });
 
-  input.addEventListener("blur", function () {
-    if (input.value === "") {
-      label.style.color = "#808080"; // Reset to default color if input is empty
-    } else {
-      label.style.color = "#4caf50"; // Keep green if input has value
-    }
-  });
-}
+        input.addEventListener("blur", function () {
+          if (input.value === "") {
+            label.style.color = "#808080"; // Reset to default color if input is empty
+          } else {
+            label.style.color = "#4caf50"; // Keep green if input has value
+          }
+        });
+      }
 
-// Call function for each input box
-changeLabelColor("surprise_test", "surprise_test_label");
-changeLabelColor("assessment_1", "assessment_1_label");
-changeLabelColor("assessment_2", "assessment_2_label");
-changeLabelColor("assessment_3", "assessment_3_label");
-changeLabelColor("assessment_4", "assessment_4_label");
-changeLabelColor("end_sem_practical", "end_sem_practical_label");
-changeLabelColor("assignment_marks", "assignment_marks_label");
-changeLabelColor("attendance_marks", "attendance_marks_label");
-changeLabelColor("class_performance_marks", "class_performance_marks_label");
-changeLabelColor("course_project_marks", "course_project_marks_label");
-changeLabelColor("mst_1_marks", "mst_1_marks_label");
-changeLabelColor("mst_2_marks", "mst_2_marks_label");
+      // Call function for each input box
+      changeLabelColor("surprise_test", "surprise_test_label");
+      changeLabelColor("assessment_1", "assessment_1_label");
+      changeLabelColor("assessment_2", "assessment_2_label");
+      changeLabelColor("assessment_3", "assessment_3_label");
+      changeLabelColor("assessment_4", "assessment_4_label");
+      changeLabelColor("end_sem_practical", "end_sem_practical_label");
+      changeLabelColor("assignment_marks", "assignment_marks_label");
+      changeLabelColor("attendance_marks", "attendance_marks_label");
+      changeLabelColor(
+        "class_performance_marks",
+        "class_performance_marks_label"
+      );
+      changeLabelColor("course_project_marks", "course_project_marks_label");
+      changeLabelColor("mst_1_marks", "mst_1_marks_label");
+      changeLabelColor("mst_2_marks", "mst_2_marks_label");
 
+      // Function to calculate total marks
+      function calculate() {
+        var assignment =
+          parseFloat(document.getElementById("assignment_marks").value) || 0;
+        var attendance =
+          parseFloat(document.getElementById("attendance_marks").value) || 0;
+        var practicalMST =
+          parseFloat(
+            document.getElementById("class_performance_marks").value
+          ) || 0;
+        var courseProject =
+          parseFloat(document.getElementById("course_project_marks").value) ||
+          0;
+        var mst1 =
+          parseFloat(document.getElementById("mst_1_marks").value) || 0;
+        var mst2 =
+          parseFloat(document.getElementById("mst_2_marks").value) || 0;
+        var endSemPractical =
+          parseFloat(document.getElementById("end_sem_practical").value) || 0;
+        var surpriseTest =
+          parseFloat(document.getElementById("surprise_test").value) || 0;
+        var quiz = parseFloat(document.getElementById("quiz_marks").value) || 0;
+        var assessment1 =
+          parseFloat(document.getElementById("assessment_1").value) || 0;
+        var assessment2 =
+          parseFloat(document.getElementById("assessment_2").value) || 0;
+        var assessment3 =
+          parseFloat(document.getElementById("assessment_3").value) || 0;
+        var assessment4 =
+          parseFloat(document.getElementById("assessment_4").value) || 0;
 
-// Function to calculate total marks
-function calculate() {
-    var assignment = parseFloat(document.getElementById("assignment_marks").value) || 0;
-    var attendance = parseFloat(document.getElementById("attendance_marks").value) || 0;
-    var classPerformance = parseFloat(document.getElementById("class_performance_marks").value) || 0;
-    var courseProject = parseFloat(document.getElementById("course_project_marks").value) || 0;
-    var mst1 = parseFloat(document.getElementById("mst_1_marks").value) || 0;
-    var mst2 = parseFloat(document.getElementById("mst_2_marks").value) || 0;
-    var endSemPractical = parseFloat(document.getElementById("end_sem_practical").value) || 0;
-    var surpriseTest = parseFloat(document.getElementById("surprise_test").value) || 0;
-    var quiz = parseFloat(document.getElementById("quiz_marks").value) || 0;
-    var assessment1 = parseFloat(document.getElementById("assessment_1").value) || 0;
-    var assessment2 = parseFloat(document.getElementById("assessment_2").value) || 0;
-    var assessment3 = parseFloat(document.getElementById("assessment_3").value) || 0;
-    var assessment4 = parseFloat(document.getElementById("assessment_4").value) || 0;
+        // Correcting calculations to match the C++ code
+        var surprise_scaled = (surpriseTest / 12) * 4;
+        var mst_avg = (mst1 + mst2) / 2;
+        var worksheet =
+          ((assessment1 + assessment2 + assessment3 + assessment4) / 120) * 40;
 
-    // Correcting calculations to match the C++ code
-    var surprise_scaled = (surpriseTest / 12) * 4;
-    var mst_avg = (mst1 + mst2) / 2;
-    var worksheet = ((assessment1 + assessment2 + assessment3 + assessment4) / 120) * 40;
+        // Calculate the final total (corrected)
+        var total =
+          ((assignment +
+            quiz +
+            mst_avg +
+            attendance +
+            surprise_scaled +
+            worksheet +
+            endSemPractical +
+            courseProject +
+            practicalMST) /
+            140) *
+          70;
 
-    // Calculate the final total (corrected)
-    var total = ((assignment + quiz + mst_avg + attendance + surprise_scaled + worksheet + endSemPractical + courseProject + classPerformance) / 140) * 70;
+        // Display result
+        document.getElementById("result").textContent =
+          "Total Marks: " + total.toFixed(2) + " Out of 70";
 
-    // Display result
-    document.getElementById("result").textContent = "Total Marks: " + total.toFixed(2)+" Out of 70";
-
-
-  // Change result color based on the total marks
-  if (total >= 40) {
-    resultElement.style.color = "#4caf50"; // Green for pass
-  } else {
-    resultElement.style.color = "#f44336"; // Red for fail
-  }
-}
-
+        // Change result color based on the total marks
+        if (total >= 40) {
+          resultElement.style.color = "#4caf50"; // Green for pass
+        } else {
+          resultElement.style.color = "#f44336"; // Red for fail
+        }
+      }
     </script>
   </body>
 </html>

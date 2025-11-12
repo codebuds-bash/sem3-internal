@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hybrid Subject Calculator</title>
     <style>
-      /* Your existing CSS styles */
       body {
         font-family: Arial, sans-serif;
         margin: 0;
@@ -13,18 +12,18 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 100vh;
-        background-color: #222; /* Dark theme background color */
-        color: #fff; /* Dark theme text color */
+        min-height: 100vh;
+        background-color: #222;
+        color: #fff;
       }
 
       .calculator {
-        margin-top: 50px;
+        margin: 20px;
         text-align: center;
         padding: 40px;
-        background-color: #333; /* Dark theme calculator background color */
+        background-color: #333;
         border-radius: 10px;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.3); /* Dark theme box shadow */
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
         max-width: 600px;
         width: 100%;
       }
@@ -51,7 +50,7 @@
         top: 12px;
         transition: 0.3s;
         pointer-events: none;
-        color: #808080; /* Default color for labels */
+        color: #808080;
       }
 
       .input-group input {
@@ -70,17 +69,17 @@
 
       .input-group input:focus {
         border: 2px solid transparent;
-        color: #fff; /* Change text color to white when input is focused */
+        color: #fff;
         box-shadow: 3px 3px 10px rgba(0, 0, 0, 1),
           -1px -1px 6px rgba(255, 255, 255, 0.4),
           inset 3px 3px 10px rgba(0, 0, 0, 1),
           inset -1px -1px 6px rgba(255, 255, 255, 0.4);
-        padding-left: 20px; /* Add padding to shift text to the right */
+        padding-left: 20px;
       }
 
       .input-group input:focus + label,
       .input-group input:valid + label {
-        color: #4caf50; /* Change label color to green when input is focused */
+        color: #4caf50;
       }
 
       .result {
@@ -89,7 +88,6 @@
       }
 
       .calculate-btn {
-        /* Your existing button styles */
         --color: #00a97f;
         --color2: rgb(10, 25, 30);
         padding: 0.8em 1.75em;
@@ -148,7 +146,6 @@
     </style>
   </head>
 
-
   <body>
     <div class="calculator">
       <h1>Hybrid Subject Calculator</h1>
@@ -160,11 +157,11 @@
           class="input"
           required
         />
-        <label for="surprise_test" id="surprise_test"
+        <label for="surprise_test" id="surprise_test_label"
           >Surprise Test (out of 12):</label
         >
       </div>
-      <!-- Add other input groups here -->
+      <!-- Assessment inputs -->
       <div class="input-group">
         <input
           type="number"
@@ -216,6 +213,78 @@
       <div class="input-group">
         <input
           type="number"
+          id="assessment_5"
+          name="assessment_5"
+          class="input"
+          required
+        />
+        <label for="assessment_5" id="assessment_5_label"
+          >Assessment 5 Marks (out of 30):</label
+        >
+      </div>
+      <div class="input-group">
+        <input
+          type="number"
+          id="assessment_6"
+          name="assessment_6"
+          class="input"
+          required
+        />
+        <label for="assessment_6" id="assessment_6_label"
+          >Assessment 6 Marks (out of 30):</label
+        >
+      </div>
+      <div class="input-group">
+        <input
+          type="number"
+          id="assessment_7"
+          name="assessment_7"
+          class="input"
+          required
+        />
+        <label for="assessment_7" id="assessment_7_label"
+          >Assessment 7 Marks (out of 30):</label
+        >
+      </div>
+      <div class="input-group">
+        <input
+          type="number"
+          id="assessment_8"
+          name="assessment_8"
+          class="input"
+          required
+        />
+        <label for="assessment_8" id="assessment_8_label"
+          >Assessment 8 Marks (out of 30):</label
+        >
+      </div>
+      <div class="input-group">
+        <input
+          type="number"
+          id="assessment_9"
+          name="assessment_9"
+          class="input"
+          required
+        />
+        <label for="assessment_9" id="assessment_9_label"
+          >Assessment 9 Marks (out of 30):</label
+        >
+      </div>
+      <div class="input-group">
+        <input
+          type="number"
+          id="project"
+          name="project"
+          class="input"
+          required
+        />
+        <label for="project" id="project_label"
+          >Project Marks (out of 30):</label
+        >
+      </div>
+      <div class="input-group">
+        <input
+          type="number"
           id="end_sem_practical"
           name="end_sem_practical"
           class="input"
@@ -225,7 +294,7 @@
           >End Sem Practical Marks (out of 40):</label
         >
       </div>
-      <!-- New Input Boxes -->
+      <!-- Remaining Input Boxes -->
       <div class="input-group">
         <input
           type="number"
@@ -248,30 +317,6 @@
         />
         <label for="attendance_marks" id="attendance_marks_label"
           >Attendance Marks(out of 2):</label
-        >
-      </div>
-      <div class="input-group">
-        <input
-          type="number"
-          id="class_performance_marks"
-          name="class_performance_marks"
-          class="input"
-          required
-        />
-        <label for="class_performance_marks" id="class_performance_marks_label"
-          >Class Performance Marks (out of 10):</label
-        >
-      </div>
-      <div class="input-group">
-        <input
-          type="number"
-          id="course_project_marks"
-          name="course_project_marks"
-          class="input"
-          required
-        />
-        <label for="course_project_marks" id="course_project_marks_label"
-          >Course Project Marks (out of 10):</label
         >
       </div>
       <div class="input-group">
@@ -305,84 +350,125 @@
           required
         />
         <label for="mst_2_marks" id="mst_2_marks_label">MST 2 Marks:</label>
-        
       </div>
       <button class="calculate-btn" onclick="calculate()">Calculate</button>
       <div class="result" id="result"></div>
     </div>
-    
-      
 
     <script>
       // Function to change label color when input is focused
-function changeLabelColor(inputId, labelId) {
-  var input = document.getElementById(inputId);
-  var label = document.getElementById(labelId);
+      function changeLabelColor(inputId, labelId) {
+        var input = document.getElementById(inputId);
+        var label = document.getElementById(labelId);
 
-  input.addEventListener("focus", function () {
-    label.style.color = "#4caf50"; // Change label color to green when input is focused
-  });
+        input.addEventListener("focus", function () {
+          label.style.color = "#4caf50";
+        });
 
-  input.addEventListener("blur", function () {
-    if (input.value === "") {
-      label.style.color = "#808080"; // Reset to default color if input is empty
-    } else {
-      label.style.color = "#4caf50"; // Keep green if input has value
-    }
-  });
-}
+        input.addEventListener("blur", function () {
+          if (input.value === "") {
+            label.style.color = "#808080";
+          } else {
+            label.style.color = "#4caf50";
+          }
+        });
+      }
 
-// Call function for each input box
-changeLabelColor("surprise_test", "surprise_test_label");
-changeLabelColor("assessment_1", "assessment_1_label");
-changeLabelColor("assessment_2", "assessment_2_label");
-changeLabelColor("assessment_3", "assessment_3_label");
-changeLabelColor("assessment_4", "assessment_4_label");
-changeLabelColor("end_sem_practical", "end_sem_practical_label");
-changeLabelColor("assignment_marks", "assignment_marks_label");
-changeLabelColor("attendance_marks", "attendance_marks_label");
-changeLabelColor("class_performance_marks", "class_performance_marks_label");
-changeLabelColor("course_project_marks", "course_project_marks_label");
-changeLabelColor("mst_1_marks", "mst_1_marks_label");
-changeLabelColor("mst_2_marks", "mst_2_marks_label");
+      // Call function for each input box
+      changeLabelColor("surprise_test", "surprise_test_label");
+      changeLabelColor("assessment_1", "assessment_1_label");
+      changeLabelColor("assessment_2", "assessment_2_label");
+      changeLabelColor("assessment_3", "assessment_3_label");
+      changeLabelColor("assessment_4", "assessment_4_label");
+      changeLabelColor("assessment_5", "assessment_5_label");
+      changeLabelColor("assessment_6", "assessment_6_label");
+      changeLabelColor("assessment_7", "assessment_7_label");
+      changeLabelColor("assessment_8", "assessment_8_label");
+      changeLabelColor("assessment_9", "assessment_9_label");
+      changeLabelColor("project", "project_label");
+      changeLabelColor("end_sem_practical", "end_sem_practical_label");
+      changeLabelColor("assignment_marks", "assignment_marks_label");
+      changeLabelColor("attendance_marks", "attendance_marks_label");
+      changeLabelColor("quiz_marks", "quiz_marks_label");
+      changeLabelColor("mst_1_marks", "mst_1_marks_label");
+      changeLabelColor("mst_2_marks", "mst_2_marks_label");
 
+      // Function to calculate total marks
+      function calculate() {
+        var assignment =
+          parseFloat(document.getElementById("assignment_marks").value) || 0;
+        var attendance =
+          parseFloat(document.getElementById("attendance_marks").value) || 0;
+        var mst1 =
+          parseFloat(document.getElementById("mst_1_marks").value) || 0;
+        var mst2 =
+          parseFloat(document.getElementById("mst_2_marks").value) || 0;
+        var endSemPractical =
+          parseFloat(document.getElementById("end_sem_practical").value) || 0;
+        var surpriseTest =
+          parseFloat(document.getElementById("surprise_test").value) || 0;
+        var quiz = parseFloat(document.getElementById("quiz_marks").value) || 0;
+        var assessment1 =
+          parseFloat(document.getElementById("assessment_1").value) || 0;
+        var assessment2 =
+          parseFloat(document.getElementById("assessment_2").value) || 0;
+        var assessment3 =
+          parseFloat(document.getElementById("assessment_3").value) || 0;
+        var assessment4 =
+          parseFloat(document.getElementById("assessment_4").value) || 0;
+        var assessment5 =
+          parseFloat(document.getElementById("assessment_5").value) || 0;
+        var assessment6 =
+          parseFloat(document.getElementById("assessment_6").value) || 0;
+        var assessment7 =
+          parseFloat(document.getElementById("assessment_7").value) || 0;
+        var assessment8 =
+          parseFloat(document.getElementById("assessment_8").value) || 0;
+        var assessment9 =
+          parseFloat(document.getElementById("assessment_9").value) || 0;
+        var project = parseFloat(document.getElementById("project").value) || 0;
 
-// Function to calculate total marks
-function calculate() {
-    var assignment = parseFloat(document.getElementById("assignment_marks").value) || 0;
-    var attendance = parseFloat(document.getElementById("attendance_marks").value) || 0;
-    var classPerformance = parseFloat(document.getElementById("class_performance_marks").value) || 0;
-    var courseProject = parseFloat(document.getElementById("course_project_marks").value) || 0;
-    var mst1 = parseFloat(document.getElementById("mst_1_marks").value) || 0;
-    var mst2 = parseFloat(document.getElementById("mst_2_marks").value) || 0;
-    var endSemPractical = parseFloat(document.getElementById("end_sem_practical").value) || 0;
-    var surpriseTest = parseFloat(document.getElementById("surprise_test").value) || 0;
-    var quiz = parseFloat(document.getElementById("quiz_marks").value) || 0;
-    var assessment1 = parseFloat(document.getElementById("assessment_1").value) || 0;
-    var assessment2 = parseFloat(document.getElementById("assessment_2").value) || 0;
-    var assessment3 = parseFloat(document.getElementById("assessment_3").value) || 0;
-    var assessment4 = parseFloat(document.getElementById("assessment_4").value) || 0;
+        // Correcting calculations to match the C++ code
+        var surprise_scaled = (surpriseTest / 12) * 4;
+        var mst_avg = (mst1 + mst2) / 2;
 
-    // Correcting calculations to match the C++ code
-    var surprise_scaled = (surpriseTest / 12) * 4;
-    var mst_avg = (mst1 + mst2) / 2;
-    var worksheet = ((assessment1 + assessment2 + assessment3 + assessment4) / 120) * 40;
+        // Calculate worksheet score from all 10 assessments (including project)
+        var worksheet =
+          ((assessment1 +
+            assessment2 +
+            assessment3 +
+            assessment4 +
+            assessment5 +
+            assessment6 +
+            assessment7 +
+            assessment8 +
+            assessment9) /
+            300) *
+          40;
 
-    // Calculate the final total (corrected)
-    var total = ((assignment + quiz + mst_avg + attendance + surprise_scaled + worksheet + endSemPractical + courseProject + classPerformance) / 140) * 70;
+        // Calculate the final total (corrected)
+        var total =
+          ((assignment +
+            quiz +
+            mst_avg +
+            attendance +
+            surprise_scaled +
+            worksheet +
+            endSemPractical) /
+            140) *
+          70;
 
-    // Display result
-    document.getElementById("result").textContent = "Total Marks: " + total.toFixed(2);
+        // Display result
+        var resultElement = document.getElementById("result");
+        resultElement.textContent = "Total Marks: " + total.toFixed(2);
 
-
-  // Change result color based on the total marks
-  if (total >= 40) {
-    resultElement.style.color = "#4caf50"; // Green for pass
-  } else {
-    resultElement.style.color = "#f44336"; // Red for fail
-  }
-}
-
+        // Change result color based on the total marks
+        if (total >= 40) {
+          resultElement.style.color = "#4caf50"; // Green for pass
+        } else {
+          resultElement.style.color = "#f44336"; // Red for fail
+        }
+      }
     </script>
   </body>
 </html>
