@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CGPA Calculator — CodeBuds</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <style>
+        :root {
+            --bg: #000000;
+            --card-bg: #111111;
+            --elevated: #1a1a1a;
+            --text: #ffffff;
+            --text-secondary: #a0a0a0;
+            --text-muted: #666666;
+            --border: #222222;
+            --border-hover: #333333;
+            --transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg); color: var(--text);
+            min-height: 100vh; padding: 40px 20px;
+            display: flex; justify-content: center; align-items: flex-start;
+            line-height: 1.6;
+        }
+
+        body::before {
+            content: ''; position: fixed; inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.02'/%3E%3C/svg%3E");
+            pointer-events: none; z-index: 0;
+        }
+
+        .container { width: 100%; max-width: 600px; margin: 0 auto; position: relative; z-index: 1; }
+
+        .back-link {
+            display: inline-flex; align-items: center; gap: 8px;
+            color: var(--text-muted); text-decoration: none;
+            font-size: 0.8rem; font-weight: 500; letter-spacing: 0.08em;
+            text-transform: uppercase; margin-bottom: 40px; transition: var(--transition);
+        }
+        .back-link:hover { color: var(--text); }
+        .back-link i { font-size: 0.7rem; }
+
+        .header { text-align: center; margin-bottom: 48px; }
+        .header h1 {
+            font-size: clamp(2rem, 5vw, 2.8rem); font-weight: 800;
+            letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 12px;
+        }
+        .header p { font-size: 0.9rem; color: var(--text-muted); }
+
+        .calculator-container {
+            background: var(--card-bg); border: 1px solid var(--border);
+            border-radius: 20px; padding: 40px; overflow: hidden;
+        }
+
+        /* ── Grading Scale ── */
+        .grading-scale {
+            background: var(--elevated); border: 1px solid var(--border);
+            padding: 24px; border-radius: 14px; margin-bottom: 32px;
+        }
+
+        .grading-scale h4 {
+            font-size: 0.75rem; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 0.1em; color: var(--text-secondary); margin-bottom: 16px;
+        }
+
+        .grading-scale ul { list-style-type: none; padding-left: 0; }
+
+        .grading-scale ul li {
+            margin: 0; padding: 8px 0; font-weight: 400; font-size: 0.85rem;
+            color: var(--text-secondary); border-bottom: 1px solid var(--border);
+        }
+        .grading-scale ul li::before { display: none; }
+        .grading-scale ul li:last-child { border-bottom: none; }
+
+        /* ── Subject Rows ── */
+        .input-group {
+            display: flex; gap: 12px; margin-bottom: 16px; align-items: center;
+        }
+
+        .input-group label {
+            flex: 0 0 60px; color: var(--text-muted);
+            font-weight: 500; font-size: 0.8rem;
+            text-transform: uppercase; letter-spacing: 0.06em;
+        }
+
+        .input-group input, .input-group select {
+            flex: 1; padding: 12px 14px;
+            border: 1px solid var(--border); border-radius: 10px;
+            font-size: 14px; font-family: 'Inter', sans-serif;
+            outline: none; transition: var(--transition);
+            background: var(--bg); color: var(--text);
+        }
+        .input-group input::placeholder { color: var(--text-muted); }
+        .input-group input:focus, .input-group select:focus {
+            border-color: var(--text-secondary);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.05);
+        }
+
+        .input-group select option {
+            background: var(--card-bg); color: var(--text);
+        }
+
+        /* ── Add Subject ── */
+        .add-subject {
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            width: 100%; padding: 14px;
+            background: transparent; border: 1px dashed var(--border);
+            border-radius: 10px; cursor: pointer; color: var(--text-muted);
+            font-size: 0.8rem; font-weight: 500; font-family: 'Inter', sans-serif;
+            text-transform: uppercase; letter-spacing: 0.08em;
+            margin-bottom: 24px; transition: var(--transition);
+        }
+        .add-subject:hover {
+            color: var(--text); border-color: var(--border-hover);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        /* ── Calculate Button ── */
+        .calculate-btn {
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            width: 100%; padding: 16px;
+            background: var(--text); color: var(--bg); border: none;
+            border-radius: 10px; cursor: pointer;
+            font-size: 0.8rem; font-weight: 600; font-family: 'Inter', sans-serif;
+            text-transform: uppercase; letter-spacing: 0.08em;
+            transition: var(--transition);
+        }
+        .calculate-btn:hover {
+            background: rgba(255,255,255,0.9); transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(255,255,255,0.1);
+        }
+        .calculate-btn:active { transform: scale(0.97); }
+
+        /* ── Result ── */
+        .result {
+            margin-top: 32px; padding: 32px;
+            background: var(--text); color: var(--bg);
+            border-radius: 14px; text-align: center;
+            font-size: 1.6rem; font-weight: 800;
+            letter-spacing: -0.02em;
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .result.show { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 480px) {
+            .calculator-container { padding: 24px; }
+            .input-group { flex-direction: column; gap: 8px; }
+            .input-group label { flex: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Home</a>
+
+        <div class="header">
+            <h1>CGPA<br>Calculator</h1>
+            <p>Calculate your cumulative grade point average</p>
+        </div>
+
+        <div class="calculator-container">
+            <!-- Grading Scale Information -->
+            <div class="grading-scale">
+                <h4>Grading Scale</h4>
+                <ul>
+                    <li>A+ = 10 grade points</li>
+                    <li>A  = 9 grade points</li>
+                    <li>B+ = 8 grade points</li>
+                    <li>B  = 7 grade points</li>
+                    <li>C+ = 6 grade points</li>
+                    <li>C  = 5 grade points</li>
+                    <li>D  = 4 grade points</li>
+                    <li>F  = 0 grade points</li>
+                </ul>
+            </div>
+
+            <div id="subjects-container">
+                <div class="input-group">
+                    <label>Grade</label>
+                    <select class="grade-select">
+                        <option value="10">A+</option>
+                        <option value="9">A</option>
+                        <option value="8">B+</option>
+                        <option value="7">B</option>
+                        <option value="6">C+</option>
+                        <option value="5">C</option>
+                        <option value="4">D</option>
+                        <option value="0">F</option>
+                    </select>
+                    <label>Credits</label>
+                    <input type="number" class="credit-input" placeholder="Credits" min="1" max="5" required>
+                </div>
+            </div>
+            
+            <div class="add-subject" onclick="addSubject()">
+                <i class="fas fa-plus"></i> Add Another Subject
+            </div>
+
+            <button class="calculate-btn" onclick="calculateCGPA()">
+                <i class="fas fa-calculator"></i> Calculate CGPA
+            </button>
+
+            <div id="result" class="result"></div>
+        </div>
+    </div>
+
+    <script>
+        function addSubject() {
+            const container = document.getElementById('subjects-container');
+            const subjectDiv = document.createElement('div');
+            subjectDiv.classList.add('input-group');
+            subjectDiv.style.animation = 'fadeIn 0.3s ease';
+            subjectDiv.innerHTML = `
+                <label>Grade</label>
+                <select class="grade-select">
+                    <option value="10">A+</option>
+                    <option value="9">A</option>
+                    <option value="8">B+</option>
+                    <option value="7">B</option>
+                    <option value="6">C+</option>
+                    <option value="5">C</option>
+                    <option value="4">D</option>
+                    <option value="0">F</option>
+                </select>
+                <label>Credits</label>
+                <input type="number" class="credit-input" placeholder="Credits" min="1" max="5" required>
+            `;
+            container.appendChild(subjectDiv);
+        }
+
+        function calculateCGPA() {
+            const grades = document.querySelectorAll('.grade-select');
+            const credits = document.querySelectorAll('.credit-input');
+            let totalGradePoints = 0;
+            let totalCredits = 0;
+
+            for (let i = 0; i < grades.length; i++) {
+                const gradePoint = parseFloat(grades[i].value);
+                const credit = parseFloat(credits[i].value);
+                if (!isNaN(gradePoint) && !isNaN(credit)) {
+                    totalGradePoints += gradePoint * credit;
+                    totalCredits += credit;
+                }
+            }
+
+            const cgpa = totalCredits > 0 ? (totalGradePoints / totalCredits).toFixed(2) : 0;
+            const resultEl = document.getElementById('result');
+            resultEl.textContent = `Your CGPA: ${cgpa}`;
+            resultEl.classList.add('show');
+        }
+    </script>
+</body>
+</html>

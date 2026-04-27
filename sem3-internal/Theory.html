@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Theory Calculator — CodeBuds</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --bg: #000000;
+        --bg-secondary: #0a0a0a;
+        --card-bg: #111111;
+        --elevated: #1a1a1a;
+        --text: #ffffff;
+        --text-secondary: #a0a0a0;
+        --text-muted: #666666;
+        --border: #222222;
+        --border-hover: #333333;
+        --radius: 14px;
+        --transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+
+      html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+
+      body {
+        font-family: 'Inter', -apple-system, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        padding: 40px 20px;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        line-height: 1.6;
+      }
+
+      body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.02'/%3E%3C/svg%3E");
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 720px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 1;
+      }
+
+      /* ── Back Link ── */
+      .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--text-muted);
+        text-decoration: none;
+        font-size: 0.8rem;
+        font-weight: 500;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 40px;
+        transition: var(--transition);
+      }
+      .back-link:hover { color: var(--text); }
+      .back-link i { font-size: 0.7rem; }
+
+      /* ── Header ── */
+      .header {
+        text-align: center;
+        margin-bottom: 48px;
+      }
+
+      .header h1 {
+        font-size: clamp(2rem, 5vw, 2.8rem);
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        line-height: 1.1;
+        margin-bottom: 12px;
+      }
+
+      .header p {
+        font-size: 0.9rem;
+        color: var(--text-muted);
+        font-weight: 400;
+      }
+
+      /* ── Calculator Card ── */
+      .calculator-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        overflow: hidden;
+        transition: var(--transition);
+      }
+
+      /* ── Tabs ── */
+      .tabs {
+        display: flex;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .tab {
+        flex: 1;
+        padding: 18px;
+        text-align: center;
+        color: var(--text-muted);
+        font-weight: 600;
+        font-size: 0.8rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: var(--transition);
+        position: relative;
+      }
+
+      .tab:hover { color: var(--text-secondary); }
+
+      .tab.active {
+        color: var(--text);
+      }
+
+      .tab.active::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 20%;
+        width: 60%;
+        height: 1px;
+        background: var(--text);
+      }
+
+      .tab i { margin-right: 8px; font-size: 0.75rem; }
+
+      /* ── Tab Content ── */
+      .tab-content {
+        display: none;
+        padding: 40px;
+      }
+
+      .tab-content.active {
+        display: block;
+        animation: fadeIn 0.5s ease;
+      }
+
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(8px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      /* ── Section Title ── */
+      .section-title {
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: var(--text-muted);
+        margin-bottom: 28px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .section-title i {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        background: var(--elevated);
+        border: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.7rem;
+        color: var(--text-secondary);
+      }
+
+      /* ── Input Grid ── */
+      .input-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+        margin-bottom: 40px;
+      }
+
+      .input-group label {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+        font-weight: 500;
+        font-size: 0.85rem;
+        color: var(--text);
+      }
+
+      .max-score {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+        font-weight: 400;
+      }
+
+      .input-group input {
+        width: 100%;
+        padding: 14px 16px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        font-size: 15px;
+        font-family: 'Inter', sans-serif;
+        transition: var(--transition);
+        background: var(--bg);
+        color: var(--text);
+        outline: none;
+      }
+
+      .input-group input::placeholder {
+        color: var(--text-muted);
+      }
+
+      .input-group input:focus {
+        border-color: var(--text-secondary);
+        box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.05);
+      }
+
+      /* ── Buttons ── */
+      .button-container {
+        text-align: center;
+        margin-top: 40px;
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        background: var(--text);
+        color: var(--bg);
+        border: none;
+        padding: 16px 32px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        font-family: 'Inter', sans-serif;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: var(--transition);
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .btn:hover {
+        background: rgba(255, 255, 255, 0.9);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 20px rgba(255, 255, 255, 0.1);
+      }
+
+      .btn:active { transform: scale(0.97); }
+
+      .btn i { font-size: 0.75rem; }
+
+      .btn-success {
+        background: transparent;
+        color: var(--text);
+        border: 1px solid var(--border);
+      }
+
+      .btn-success:hover {
+        background: var(--elevated);
+        border-color: var(--border-hover);
+        box-shadow: none;
+      }
+
+      /* ── Result Container ── */
+      .result-container {
+        margin-top: 48px;
+        padding: 40px;
+        background: var(--text);
+        border-radius: 16px;
+        color: var(--bg);
+        text-align: center;
+        display: none;
+        animation: fadeIn 0.5s ease;
+        position: relative;
+      }
+
+      .result-container.show { display: block; }
+
+      .result-text {
+        font-size: 2rem;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        margin-bottom: 24px;
+      }
+
+      /* ── Progress Bar ── */
+      .progress-container { margin-top: 32px; }
+
+      .progress-bar {
+        height: 6px;
+        background: rgba(0, 0, 0, 0.1);
+        border-radius: 3px;
+        overflow: hidden;
+        margin-bottom: 12px;
+      }
+
+      .progress-fill {
+        height: 100%;
+        background: var(--bg);
+        border-radius: 3px;
+        transition: width 1s cubic-bezier(0.22, 1, 0.36, 1);
+        width: 0%;
+      }
+
+      .progress-text {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.75rem;
+        font-weight: 500;
+        color: var(--text-muted);
+      }
+
+      /* ── Breakdown ── */
+      .marks-breakdown {
+        background: rgba(0, 0, 0, 0.06);
+        border-radius: 12px;
+        padding: 24px;
+        margin-top: 28px;
+        text-align: left;
+      }
+
+      .breakdown-title {
+        font-weight: 700;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 20px;
+        text-align: center;
+        padding-bottom: 14px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      }
+
+      .breakdown-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+        font-size: 0.85rem;
+      }
+
+      .breakdown-item:last-child {
+        border-bottom: none;
+        font-weight: 700;
+        font-size: 1rem;
+        margin-top: 12px;
+        padding-top: 16px;
+        border-top: 1px solid rgba(0, 0, 0, 0.15);
+      }
+
+      /* ── Info Tab ── */
+      .info-block {
+        background: var(--elevated);
+        border: 1px solid var(--border);
+        padding: 24px;
+        border-radius: 12px;
+        margin-bottom: 24px;
+      }
+
+      .info-block h4 {
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--text-secondary);
+        margin-bottom: 16px;
+      }
+
+      .info-block li {
+        padding: 10px 0;
+        border-bottom: 1px solid var(--border);
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+        list-style: none;
+        padding-left: 0;
+      }
+
+      .info-block li::before { display: none; }
+
+      .info-block li:last-child { border-bottom: none; }
+
+      .info-block strong { color: var(--text); }
+
+      .formula-box {
+        background: var(--text);
+        color: var(--bg);
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+      }
+
+      .formula-box h4 {
+        font-size: 0.7rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 8px;
+        color: var(--text-muted);
+      }
+
+      .formula-box p {
+        font-weight: 500;
+        font-size: 0.9rem;
+      }
+
+      /* ── Responsive ── */
+      @media (max-width: 768px) {
+        .input-grid { grid-template-columns: 1fr; }
+        .tab-content { padding: 24px; }
+        .button-container { flex-direction: column; }
+        .btn { width: 100%; justify-content: center; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Home</a>
+
+      <div class="header">
+        <h1>Theory Marks<br>Calculator</h1>
+        <p>Calculate your internal marks with precision</p>
+      </div>
+
+      <div class="calculator-card">
+        <div class="tabs">
+          <div class="tab active" data-tab="calculator">
+            <i class="fas fa-calculator"></i> Calculator
+          </div>
+          <div class="tab" data-tab="info">
+            <i class="fas fa-info-circle"></i> Info
+          </div>
+        </div>
+
+        <div class="tab-content active" id="calculator-tab">
+          <div class="section-title">
+            <i class="fas fa-book"></i>
+            <span>Internal Marks Components</span>
+          </div>
+          <div class="input-grid">
+            <div class="input-group">
+              <label for="assignment">Assignment <span class="max-score">(Max: 10)</span></label>
+              <div class="input-wrapper">
+                <input type="number" id="assignment" min="0" max="10" step="0.1" placeholder="Enter marks" />
+              </div>
+            </div>
+            <div class="input-group">
+              <label for="attendance">Attendance <span class="max-score">(Max: 2)</span></label>
+              <div class="input-wrapper">
+                <input type="number" id="attendance" min="0" max="5" step="0.1" placeholder="Enter marks" />
+              </div>
+            </div>
+            <div class="input-group">
+              <label for="mst1">MST 1 <span class="max-score">(Max: 20)</span></label>
+              <div class="input-wrapper">
+                <input type="number" id="mst1" min="0" max="20" step="0.1" placeholder="Enter marks" />
+              </div>
+            </div>
+            <div class="input-group">
+              <label for="mst2">MST 2 <span class="max-score">(Max: 20)</span></label>
+              <div class="input-wrapper">
+                <input type="number" id="mst2" min="0" max="20" step="0.1" placeholder="Enter marks" />
+              </div>
+            </div>
+            <div class="input-group">
+              <label for="quiz">Quiz <span class="max-score">(Max: 4)</span></label>
+              <div class="input-wrapper">
+                <input type="number" id="quiz" min="0" max="5" step="0.1" placeholder="Enter marks" />
+              </div>
+            </div>
+            <div class="input-group">
+              <label for="surprise_test">Surprise Test <span class="max-score">(Max: 12)</span></label>
+              <div class="input-wrapper">
+                <input type="number" id="surprise_test" min="0" max="12" step="0.1" placeholder="Enter marks" />
+              </div>
+            </div>
+          </div>
+
+          <div class="button-container">
+            <button class="btn" onclick="calculate()">
+              <i class="fas fa-calculator"></i> Calculate Marks
+            </button>
+            <button class="btn btn-success" id="checkAnotherButton" style="display: none" onclick="resetForm()">
+              <i class="fas fa-redo"></i> Calculate Another
+            </button>
+          </div>
+
+          <div class="result-container" id="resultContainer">
+            <div class="result-text" id="result"></div>
+            <div class="progress-container">
+              <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+              </div>
+              <div class="progress-text">
+                <span>0%</span>
+                <span id="progressPercentage">0%</span>
+                <span>100%</span>
+              </div>
+            </div>
+            <div class="marks-breakdown" id="marksBreakdown"></div>
+          </div>
+        </div>
+
+        <div class="tab-content" id="info-tab">
+          <div class="section-title">
+            <i class="fas fa-info-circle"></i>
+            <span>How It Works</span>
+          </div>
+
+          <h3 style="color: var(--text-secondary); margin-bottom: 20px; font-size: 1rem;">
+            Understanding the Calculation
+          </h3>
+          <p style="margin-bottom: 20px; color: var(--text-muted); font-size: 0.85rem;">
+            This calculator computes your internal marks based on the following components:
+          </p>
+
+          <div class="info-block">
+            <h4>Calculation Formula</h4>
+            <ul style="list-style-type: none; padding-left: 0">
+              <li><strong>Assignment:</strong> Direct marks (out of 10)</li>
+              <li><strong>Attendance:</strong> Direct marks (out of 2)</li>
+              <li><strong>MST 1 & 2:</strong> Average of both MSTs (out of 20 each)</li>
+              <li><strong>Quiz:</strong> Direct marks (out of 4)</li>
+              <li><strong>Surprise Test:</strong> Weighted calculation (12 → 4 marks)</li>
+            </ul>
+          </div>
+
+          <p style="margin-bottom: 20px; color: var(--text-muted); font-size: 0.85rem;">
+            The calculator sums all these components to give you a final internal marks score.
+          </p>
+
+          <div class="formula-box">
+            <h4>Formula</h4>
+            <p>Total = Assignment + Attendance + (MST1 + MST2)/2 + Quiz + (Surprise Test / 12) × 4</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Tab switching functionality
+      document.querySelectorAll(".tab").forEach((tab) => {
+        tab.addEventListener("click", () => {
+          document.querySelectorAll(".tab").forEach((t) => t.classList.remove("active"));
+          document.querySelectorAll(".tab-content").forEach((c) => c.classList.remove("active"));
+          tab.classList.add("active");
+          const tabId = tab.getAttribute("data-tab");
+          document.getElementById(`${tabId}-tab`).classList.add("active");
+        });
+      });
+
+      function calculate() {
+        const assignment = parseFloat(document.getElementById("assignment").value) || 0;
+        const attendance = parseFloat(document.getElementById("attendance").value) || 0;
+        const mst1 = parseFloat(document.getElementById("mst1").value) || 0;
+        const mst2 = parseFloat(document.getElementById("mst2").value) || 0;
+        const quiz = parseFloat(document.getElementById("quiz").value) || 0;
+        const surpriseTest = parseFloat(document.getElementById("surprise_test").value) || 0;
+
+        // Calculating average MST marks
+        const avgMST = (mst1 + mst2) / 2;
+
+        // Calculating weighted surprise test marks
+        const weightedSurpriseTest = (surpriseTest / 12) * 4;
+
+        // Calculating total internal marks
+        const total = assignment + attendance + avgMST + quiz + weightedSurpriseTest;
+
+        // Calculate percentage (assuming max possible is 59)
+        const maxPossible = 40;
+        const percentage = (total / maxPossible) * 100;
+
+        // Displaying the result
+        document.getElementById("result").textContent = `Your internal marks are: ${total.toFixed(2)} / ${maxPossible}`;
+        document.getElementById("resultContainer").classList.add("show");
+        document.getElementById("checkAnotherButton").style.display = "inline-flex";
+
+        // Animate progress bar
+        setTimeout(() => {
+          document.getElementById("progressFill").style.width = `${percentage}%`;
+          document.getElementById("progressPercentage").textContent = `${percentage.toFixed(1)}%`;
+        }, 300);
+
+        // Create breakdown
+        let breakdownHTML = `
+          <div class="breakdown-title">Marks Breakdown</div>
+          <div class="breakdown-item">
+            <span>Assignment:</span>
+            <span>${assignment.toFixed(2)} / 10</span>
+          </div>
+          <div class="breakdown-item">
+            <span>Attendance:</span>
+            <span>${attendance.toFixed(2)} / 2</span>
+          </div>
+          <div class="breakdown-item">
+            <span>MST Average (${mst1}/20 + ${mst2}/20) ÷ 2:</span>
+            <span>${avgMST.toFixed(2)} / 20</span>
+          </div>
+          <div class="breakdown-item">
+            <span>Quiz:</span>
+            <span>${quiz.toFixed(2)} / 5</span>
+          </div>
+          <div class="breakdown-item">
+            <span>Surprise Test (${surpriseTest}/12 → ${weightedSurpriseTest.toFixed(2)}/4):</span>
+            <span>${weightedSurpriseTest.toFixed(2)} / 4</span>
+          </div>
+          <div class="breakdown-item">
+            <span>Total:</span>
+            <span>${total.toFixed(2)} / ${maxPossible}</span>
+          </div>
+        `;
+
+        document.getElementById("marksBreakdown").innerHTML = breakdownHTML;
+
+        // Scroll to results
+        document.getElementById("resultContainer").scrollIntoView({ behavior: "smooth" });
+      }
+
+      function resetForm() {
+        document.querySelectorAll("input").forEach((input) => { input.value = ""; });
+        document.getElementById("resultContainer").classList.remove("show");
+        document.getElementById("checkAnotherButton").style.display = "none";
+        document.getElementById("progressFill").style.width = "0%";
+        document.getElementById("progressPercentage").textContent = "0%";
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    </script>
+  </body>
+</html>
