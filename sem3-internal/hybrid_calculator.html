@@ -173,9 +173,18 @@
 
         <div class="section-label">Assessment & Practicals</div>
 
+        <div class="section-label" style="margin-top: 10px;">Worksheets (10 Exps, Max 30 each)</div>
         <div class="input-group">
-          <label for="worksheets_marks">Worksheets <span style="font-size: 0.75rem; color: var(--text-muted);">(out of 300)</span></label>
-          <input type="number" id="worksheets_marks" name="worksheets_marks" placeholder="Enter total marks" required />
+          <input type="number" id="exp1" placeholder="Exp 1" style="width: 48%; display: inline-block; margin-bottom: 8px;" required />
+          <input type="number" id="exp2" placeholder="Exp 2" style="width: 48%; display: inline-block; margin-bottom: 8px; margin-left: 2%;" required />
+          <input type="number" id="exp3" placeholder="Exp 3" style="width: 48%; display: inline-block; margin-bottom: 8px;" required />
+          <input type="number" id="exp4" placeholder="Exp 4" style="width: 48%; display: inline-block; margin-bottom: 8px; margin-left: 2%;" required />
+          <input type="number" id="exp5" placeholder="Exp 5" style="width: 48%; display: inline-block; margin-bottom: 8px;" required />
+          <input type="number" id="exp6" placeholder="Exp 6" style="width: 48%; display: inline-block; margin-bottom: 8px; margin-left: 2%;" required />
+          <input type="number" id="exp7" placeholder="Exp 7" style="width: 48%; display: inline-block; margin-bottom: 8px;" required />
+          <input type="number" id="exp8" placeholder="Exp 8" style="width: 48%; display: inline-block; margin-bottom: 8px; margin-left: 2%;" required />
+          <input type="number" id="exp9" placeholder="Exp 9" style="width: 48%; display: inline-block; margin-bottom: 8px;" required />
+          <input type="number" id="exp10" placeholder="Exp 10" style="width: 48%; display: inline-block; margin-bottom: 8px; margin-left: 2%;" required />
         </div>
         <div class="input-group">
           <label for="end_sem_practical">Practical End-Term <span style="font-size: 0.75rem; color: var(--text-muted);">(out of 40)</span></label>
@@ -194,7 +203,10 @@
       function calculate() {
         var surpriseTest = parseFloat(document.getElementById("surprise_test").value) || 0;
         var practicalMST = parseFloat(document.getElementById("practical_mst_marks").value) || 0;
-        var worksheets = parseFloat(document.getElementById("worksheets_marks").value) || 0;
+        var worksheets = 0;
+        for (let i = 1; i <= 10; i++) {
+          worksheets += parseFloat(document.getElementById("exp" + i).value) || 0;
+        }
         var endSemPractical = parseFloat(document.getElementById("end_sem_practical").value) || 0;
         var assignment = parseFloat(document.getElementById("assignment_marks").value) || 0;
         var quiz = parseFloat(document.getElementById("quiz_marks").value) || 0;
