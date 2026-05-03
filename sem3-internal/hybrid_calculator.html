@@ -144,11 +144,11 @@
           <input type="number" id="surprise_test" name="surprise_test" placeholder="Enter marks" required />
         </div>
         <div class="input-group">
-          <label for="mst_1_marks">MST 1 Marks</label>
+          <label for="mst_1_marks">MST 1 Marks <span style="font-size: 0.75rem; color: var(--text-muted);">(out of 20)</span></label>
           <input type="number" id="mst_1_marks" name="mst_1_marks" placeholder="Enter marks" required />
         </div>
         <div class="input-group">
-          <label for="mst_2_marks">MST 2 Marks</label>
+          <label for="mst_2_marks">MST 2 Marks <span style="font-size: 0.75rem; color: var(--text-muted);">(out of 20)</span></label>
           <input type="number" id="mst_2_marks" name="mst_2_marks" placeholder="Enter marks" required />
         </div>
         <div class="input-group">
@@ -167,34 +167,18 @@
           <input type="number" id="attendance_marks" name="attendance_marks" placeholder="Enter marks" required />
         </div>
         <div class="input-group">
-          <label for="class_performance_marks">Class Performance <span style="font-size: 0.75rem; color: var(--text-muted);">(out of 10)</span></label>
-          <input type="number" id="class_performance_marks" name="class_performance_marks" placeholder="Enter marks" required />
-        </div>
-        <div class="input-group">
-          <label for="course_project_marks">Course Project <span style="font-size: 0.75rem; color: var(--text-muted);">(out of 10)</span></label>
-          <input type="number" id="course_project_marks" name="course_project_marks" placeholder="Enter marks" required />
+          <label for="practical_mst_marks">Practical MST <span style="font-size: 0.75rem; color: var(--text-muted);">(out of 10)</span></label>
+          <input type="number" id="practical_mst_marks" name="practical_mst_marks" placeholder="Enter marks" required />
         </div>
 
         <div class="section-label">Assessment & Practicals</div>
 
         <div class="input-group">
-          <label for="assessment_1">Assessment 1 <span style="font-size: 0.75rem; color: var(--text-muted);">(out of 30)</span></label>
-          <input type="number" id="assessment_1" name="assessment_1" placeholder="Enter marks" required />
+          <label for="worksheets_marks">Worksheets <span style="font-size: 0.75rem; color: var(--text-muted);">(out of 300)</span></label>
+          <input type="number" id="worksheets_marks" name="worksheets_marks" placeholder="Enter total marks" required />
         </div>
         <div class="input-group">
-          <label for="assessment_2">Assessment 2 <span style="font-size: 0.75rem; color: var(--text-muted);">(out of 30)</span></label>
-          <input type="number" id="assessment_2" name="assessment_2" placeholder="Enter marks" required />
-        </div>
-        <div class="input-group">
-          <label for="assessment_3">Assessment 3 <span style="font-size: 0.75rem; color: var(--text-muted);">(out of 30)</span></label>
-          <input type="number" id="assessment_3" name="assessment_3" placeholder="Enter marks" required />
-        </div>
-        <div class="input-group">
-          <label for="assessment_4">Assessment 4 <span style="font-size: 0.75rem; color: var(--text-muted);">(out of 30)</span></label>
-          <input type="number" id="assessment_4" name="assessment_4" placeholder="Enter marks" required />
-        </div>
-        <div class="input-group">
-          <label for="end_sem_practical">End Sem Practical <span style="font-size: 0.75rem; color: var(--text-muted);">(out of 40)</span></label>
+          <label for="end_sem_practical">Practical End-Term <span style="font-size: 0.75rem; color: var(--text-muted);">(out of 40)</span></label>
           <input type="number" id="end_sem_practical" name="end_sem_practical" placeholder="Enter marks" required />
         </div>
 
@@ -208,26 +192,26 @@
 
     <script>
       function calculate() {
+        var surpriseTest = parseFloat(document.getElementById("surprise_test").value) || 0;
+        var practicalMST = parseFloat(document.getElementById("practical_mst_marks").value) || 0;
+        var worksheets = parseFloat(document.getElementById("worksheets_marks").value) || 0;
+        var endSemPractical = parseFloat(document.getElementById("end_sem_practical").value) || 0;
         var assignment = parseFloat(document.getElementById("assignment_marks").value) || 0;
-        var attendance = parseFloat(document.getElementById("attendance_marks").value) || 0;
-        var practicalMST = parseFloat(document.getElementById("class_performance_marks").value) || 0;
-        var courseProject = parseFloat(document.getElementById("course_project_marks").value) || 0;
+        var quiz = parseFloat(document.getElementById("quiz_marks").value) || 0;
         var mst1 = parseFloat(document.getElementById("mst_1_marks").value) || 0;
         var mst2 = parseFloat(document.getElementById("mst_2_marks").value) || 0;
-        var endSemPractical = parseFloat(document.getElementById("end_sem_practical").value) || 0;
-        var surpriseTest = parseFloat(document.getElementById("surprise_test").value) || 0;
-        var quiz = parseFloat(document.getElementById("quiz_marks").value) || 0;
-        var assessment1 = parseFloat(document.getElementById("assessment_1").value) || 0;
-        var assessment2 = parseFloat(document.getElementById("assessment_2").value) || 0;
-        var assessment3 = parseFloat(document.getElementById("assessment_3").value) || 0;
-        var assessment4 = parseFloat(document.getElementById("assessment_4").value) || 0;
+        var attendance = parseFloat(document.getElementById("attendance_marks").value) || 0;
 
-        var surprise_scaled = (surpriseTest / 12) * 4;
-        var mst_avg = (mst1 + mst2) / 2;
-        var worksheet = ((assessment1 + assessment2 + assessment3 + assessment4) / 120) * 40;
+        var mstTotal = mst1 + mst2;
 
-        var total = ((assignment + quiz + mst_avg + attendance + surprise_scaled +
-          worksheet + endSemPractical + courseProject + practicalMST) / 140) * 70;
+        var total = (surpriseTest / 12) * 4 +
+                    (practicalMST / 10) * 4 +
+                    (worksheets / 300) * 20 +
+                    (endSemPractical / 40) * 20 +
+                    (assignment / 10) * 6 +
+                    (quiz / 4) * 4 +
+                    (mstTotal / 40) * 10 +
+                    (attendance / 2) * 2;
 
         var resultEl = document.getElementById("result");
         resultEl.textContent = "Total Marks: " + total.toFixed(2) + " Out of 70";
